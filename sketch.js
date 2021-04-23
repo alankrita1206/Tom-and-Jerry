@@ -1,30 +1,67 @@
-var rect1 , rect2; 
+var garden , gardenImage ; 
+var tom , tomImage1 , tomImage2 , tomImage3, tomImage4 ;
+var jerry,jerryImage1,jerryImage2,jerryImage3, jerryImage4;
+
+
+function preload() {
+    //load the images here
+    gardenImage = loadImage("images/garden.png") ; 
+    tomImage1=loadAnimation("images/cat1.png");
+    tomImage2=loadAnimation("images/cat2.png" , "images/cat3.png" );
+    tomImage4=loadAnimation("images/cat4.png");
+    jerryImage1 = loadAnimation("images/mouse1.png");
+    jerryImage2 = loadAnimation("images/mouse2.png" , "images/mouse3.png");
+    jerryImage4 = loadAnimation("images/mouse4.png");
+    
+    
+
+}
+
+function setup(){
+    createCanvas(1000,800);
+    //create tom and jerry sprites here
+    tom = createSprite(870,650);
+    tom.addAnimation("slipping", tomImage1);
+    tom.scale = 0.2 ;
+
+    jerry = createSprite(200,650);
+    jerry.addAnimation("standing" , jerryImage1);
+    jerry.scale = 0.2 ; 
 
 
 
-function setup() {
-  createCanvas(1200,800);
-  rect1 = createSprite(400, 200, 50, 50);
-  rect1.shapeColor = "yellow";
-  rect2 = createSprite(340, 354, 30, 50);
-  rect2.shapeColor = "yellow";
 }
 
 function draw() {
-  background(0);  
-  rect1.x = mouseX ;
-  rect1.y = mouseY;
-  if(rect1.x - rect2.x < rect1.width/2 + rect2.width/2 && 
-    rect2.x - rect1.x < rect1.width/2 + rect2.width/2 && 
-    rect1.y - rect2.y < rect1.height/2 + rect2.height/2 && 
-    rect2.y - rect1.y < rect1.height/2 + rect2.height/2 ){
-   rect1.shapeColor = "blue";
-   rect2.shapeColor = "blue";
-  } 
 
-  else {
-    rect1.shapeColor = "yellow";
-    rect2.shapeColor = "yellow";
+    background(gardenImage);
+    //Write condition here to evalute if tom and jerry collide
+    if(tom.x - jerry.x < (tom.width/2 - jerry.width/2)){
+      tom.velocityX = 0;
+      tom.addAnimation("stop", tomImage4);
+      tom.x = 300;
+      tom.scale= 0.2;
+      tom.changeAnimation("stop");
+
+      jerry.addAnimation("jerryStop", jerryImage4);
+      jerry.scale=0.2;
+      jerry.changeAnimation("jerryStop");
+
+
+    }
+    drawSprites();
+}
+
+
+function keyPressed(){
+
+  if(keyCode === LEFT_ARROW){
+      tom.velocityX = -5; 
+      tom.addAnimation("tomRunning", tomImage2);
+      tom.changeAnimation("tomRunning");
+      
+      jerry.addAnimation("jerryTeasing", jerryImage2);
+      jerry.frameDelay = 25;
+      jerry.changeAnimation("jerryTeasing");
   }
-  drawSprites();
 }
